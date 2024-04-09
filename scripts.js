@@ -1228,8 +1228,8 @@ function showCards(pageItems) {
     let overview = movie.overview;
     let genres = movie.genres.join(", ");
     let languages = movie.spoken_languages.join(", ");
-    const nextCard = templateCard.cloneNode(true); // Copy the template card
-    editCardContent(nextCard, title, imageURL, overview, genres, languages); // Edit card content
+    const nextCard = templateCard.cloneNode(true);
+    editCardContent(nextCard, title, imageURL, overview, genres, languages);
 
     // Add the "X" button
     const closeButton = document.createElement("span");
@@ -1241,7 +1241,7 @@ function showCards(pageItems) {
     };
     nextCard.appendChild(closeButton);
 
-    cardContainer.appendChild(nextCard); // Add new card to the container
+    cardContainer.appendChild(nextCard); // add new card
   });
 }
 
@@ -1257,11 +1257,11 @@ function createPagination(movies) {
     const button = document.createElement("button");
     button.innerText = i;
     button.onclick = function () {
-      // Remove the active class from the current active button
+      // Remove the active class from current active
       const currentActiveButton = document.querySelector("#pagination .active");
       if (currentActiveButton) currentActiveButton.classList.remove("active");
 
-      // Set the clicked button as the new active button
+      //  clicked button as the new active button
       button.classList.add("active");
 
       currentPage = i;
@@ -1269,7 +1269,7 @@ function createPagination(movies) {
     };
     pagination.appendChild(button);
 
-    // Set the first button as the active button
+    // Set the first button as the active button by default
     if (i === 1) {
       button.classList.add("active");
     }
@@ -1297,17 +1297,17 @@ function editCardContent(
   cardOverview.textContent =
     newOverview.length > 100 ? newOverview.slice(0, 100) + "..." : newOverview;
   const cardGenres = card.querySelector(".genres");
-  newGenres = newGenres.split(", "); // Convert newGenres to an array
-  cardGenres.innerHTML = ""; // Clear existing genres
+  newGenres = newGenres.split(", "); // change genres from str to an array
+  cardGenres.innerHTML = ""; // Clear existing genres (otherwise it updates only ones that have everything selected)
   newGenres.forEach((genre) => {
     const genreDiv = document.createElement("div");
     genreDiv.textContent = genre;
     genreDiv.classList.add("genre");
     const color = getColorForGenre(genre);
-    console.log("color for", genre, ":", color); // Check getColorForGenre
+    console.log("color for", genre, ":", color); // add random color
     genreDiv.style.backgroundColor = color;
     genreDiv.addEventListener("click", () => {
-      // Handle genre click
+      // just make sure that it's clickable
     });
     cardGenres.appendChild(genreDiv);
   });
@@ -1318,55 +1318,56 @@ function editCardContent(
 }
 
 function getColorForGenre(genre) {
-  // Return a pastel color based on the genre
   switch (genre) {
     case "Action":
-      return "#FFB6C1"; // Pastel pink
+      return "#FFB6C1"; // pink
     case "Adventure":
-      return "#FFD700"; // Pastel yellow
+      return "#FFD700"; // yellow
     case "Animation":
-      return "#7FFFD4"; // Pastel aqua
+      return "#7FFFD4"; // aqua
     case "Comedy":
-      return "#D8BFD8"; // Pastel purple
+      return "#D8BFD8"; // purple
     case "Crime":
-      return "#DDA0DD"; // Pastel plum
+      return "#DDA0DD"; // plum
     case "Documentary":
-      return "#87CEFA"; // Pastel sky blue
+      return "#87CEFA"; // sky blue
     case "Drama":
-      return "#FFDEAD"; // Pastel navajo white
+      return "#FFDEAD"; // navajo white
     case "Family":
-      return "#98FB98"; // Pastel green
+      return "#98FB98"; // green
     case "Fantasy":
-      return "#AFEEEE"; // Pastel turquoise
+      return "#AFEEEE"; // turquoise
     case "History":
-      return "#FAFAD2"; // Pastel goldenrod
+      return "#FAFAD2"; // goldenrod
     case "Horror":
-      return "#FFC0CB"; // Pastel pink
+      return "#FFC0CB"; // pink
     case "Music":
-      return "#F0E68C"; // Pastel khaki
+      return "#F0E68C"; // khaki
     case "Mystery":
-      return "#E6E6FA"; // Pastel lavender
+      return "#E6E6FA"; // lavender
     case "Romance":
-      return "#FFDAB9"; // Pastel peach
+      return "#FFDAB9"; // peach
     case "Science Fiction":
-      return "#B0E0E6"; // Pastel powder blue
+      return "#B0E0E6"; // powder blue
     case "Thriller":
-      return "#FFB347"; // Pastel orange
+      return "#FFB347"; // orange
     case "TV Movie":
-      return "#C1CDCD"; // Pastel azure
+      return "#C1CDCD"; // azure
     case "War":
-      return "#FFE4E1"; // Pastel misty rose
+      return "#FFE4E1"; // misty rose
     case "Western":
-      return "#DEB887"; // Pastel burlywood
+      return "#DEB887"; // burlywood
     default:
-      return "#F5F5F5"; // Pastel white smoke
+      return "#F5F5F5"; // white smoke
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  //LOAD EVERYTHING
   createPagination(currentMovies);
   showPage(currentPage);
 
+  //CLOSE INFO MODAL
   document
     .getElementById("modal-close-button")
     .addEventListener("click", function () {
@@ -1379,6 +1380,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("main-content").classList.add("modal-blur");
   });
 
+  //WHEN YOU UPDATE THE FILTER, IT'LL UPDATE THE MOVIES OT ONLY SHOW CARDS WITH THAT GENRE
   document
     .getElementById("genre-select")
     .addEventListener("change", function () {
@@ -1389,14 +1391,14 @@ document.addEventListener("DOMContentLoaded", () => {
       createPagination(currentMovies);
       showPage(1);
     });
-  // Assuming each genre under a card has a class 'card-genre'
+  // WHEN YOU CLICK A CARD GENRE, IT'L UPDATE THE FILTER
   document.querySelectorAll(".genre").forEach((genreElement) => {
     genreElement.addEventListener("click", function () {
       const selectedGenre = this.textContent;
       currentMovies = movieData.filter((movie) =>
         movie.genres.includes(selectedGenre)
       );
-      // Update the value of the genre select dropdown
+      // change the dropdown value to be the same as selected one
       document.getElementById("genre-select").value = selectedGenre;
       createPagination(currentMovies);
       showPage(1);
@@ -1407,17 +1409,15 @@ document.addEventListener("DOMContentLoaded", () => {
 //SEARCHING FOR MOVIES
 
 function searchMovies(searchText) {
-  // Filter the movies
+  //filter only with tiles that include searchtext
   const filteredMovies = movieData.filter((movie) =>
     movie.original_title.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  // Update currentMovies
+  // Update current movies
   currentMovies = filteredMovies;
 
-  // Recreate the pagination with the new data
+  // reload page
   createPagination(currentMovies);
-
-  // Show the first page of the new data
   showPage(1);
 }
